@@ -5,8 +5,8 @@
 - Check if your program runs correctly.
 
 ### Tips
-1. As initial conditions, E_z, B_y are 0. Give a E_z variation. Forexample, set up a Gaussian Pulse either at one boundary or at the center.
+As initial conditions, E_z, B_y are 0. Give a E_z variation. Forexample, set up a Gaussian Pulse either at one boundary or at the center.
 
 # Term
-FDTD (Finite Difference Time Domain): 時間領域差分 
-PDE (Partial Differential Equation): 偏微分方程式
+- FDTD (Finite Difference Time Domain): 時間領域差分 
+- PDE (Partial Differential Equation): 偏微分方程式
