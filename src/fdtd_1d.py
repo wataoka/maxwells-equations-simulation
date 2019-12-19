@@ -15,6 +15,8 @@ if __name__ == "__main__":
     c = 1.0
     dx = 1.0
     dt = 0.5
+    mu = 1.0
+    delta = 1.0
     num_time = 10
     num_space = 10
 
@@ -33,14 +35,14 @@ if __name__ == "__main__":
             elif x == num_space-1:
                 E[t][x] = ((c*dt-dx)/(c*dt+dx))*(E[t][x] - E[t-1][x-1])
             else:
-                E[t][x+1] = ((dx)/(dt))*(B[t][x] - B[t-1][x])*E[t-1][x]
+                E[t][x] = ((dx)/(dt))*(B[t][x-1] - B[t-1][x-1])*E[t][x-1]
             
         # update B
         for x in range(num_space-1):
-            if t == 0:
-                B[t][x] = ((dt)/(dx))*(E[t][x+1] - E[t][x])
-            else:
-                B[t][x] = ((dt)/(dx))*(E[t][x+1] - E[t][x]) + B[t-1][x]
+            B[t][x] +=   ((2/(pow(c,2)*dx))+mu*delta)*E[t+1][x]
+            B[t][x] +=  (-(2/(pow(c,2)*dx))+mu*delta)*E[t][x]
+            if x != 0:
+                B[t][x] += B[t][x-1]
 
 show_result(E)
 show_result(B)
