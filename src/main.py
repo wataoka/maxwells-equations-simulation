@@ -12,10 +12,13 @@ def gaussian_pulse(t, A=1.0, tau=20):
 def show_result(arr):
     print(*list(map(lambda x: '{0:>8.2f}'.format(x), arr)))
 
-def draw_plot(E, B, lines, ax, ylim=1):
-    lines.set_data(X, B)
-    ax.set_xlim((X.min(), X.max()))
-    ax.set_ylim((-ylim, ylim))
+def draw_plot(E, B, lines_E, lines_B, ax, ylim=1):
+    lines_E.set_data(X, E)
+    lines_B.set_data(X, B)
+    ax[0].set_xlim((X.min(), X.max()))
+    ax[1].set_xlim((X.min(), X.max()))
+    ax[0].set_ylim((-ylim, ylim))
+    ax[1].set_ylim((-ylim, ylim))
     plt.draw()
     plt.pause(0.1)
 
@@ -27,17 +30,19 @@ if __name__ == "__main__":
     dt = 0.5
     mu = 1.0
     delta = 1.0
-    num_time = 20000
+    num_time = 2000
     num_space = 100
 
     E = [0 for _ in range(num_space)]
     B = [0 for _ in range(num_space)]
 
-    refrection = False
+    refrection = True
+    pulse_point = num_space//2
 
-    fig, ax = plt.subplots(1, 1)
+    fig, ax = plt.subplots(2, 1)
     X = np.arange(-(num_space//2), (num_space//2), dx)
-    lines, = ax.plot(X, E)
+    lines_E, = ax[0].plot(X, E)
+    lines_B, = ax[1].plot(X, B)
 
     # simulation
     for t in range(num_time-1):
@@ -58,10 +63,10 @@ if __name__ == "__main__":
                 E[x] = ((c*dt-dx)/(c*dt+dx))*(E[x] - pre_E[x-1])
             else:
                 E[x] = pre_E[x] + pow(c, 2)*(dx/dt)*(pre_B[x] - pre_B[x-1])
-        E[num_space//2] += gaussian_pulse(t)
-            
+        E[pulse_point] += gaussian_pulse(t)
+
         # update B
         for x in range(num_space-1):
             B[x] = pre_B[x] + (dt/dx)*(E[x+1]-E[x])
         
-        draw_plot(E, B, lines, ax)
+        draw_plot(E, B, lines_E, lines_B, ax)
