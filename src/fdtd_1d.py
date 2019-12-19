@@ -5,6 +5,11 @@ def gaussian_pulse(idx, E, A=1.0, tau=1.0, alpha=(4/1.0)**2):
     E[0][idx] = pulse
     return E
 
+def show_result(arr):
+    for a in arr:
+        print(*list(map(lambda x: '{0:>8.2f}'.format(x), a)))
+    print()
+
 if __name__ == "__main__":
 
     c = 1.0
@@ -26,7 +31,7 @@ if __name__ == "__main__":
             if x == 0:
                 E[t][x] = ((c*dt-dx)/(c*dt+dx))*(E[t][x+1] - E[t-1][x])
             elif x == num_space-1:
-                E[t][x] = ((c*dt-dx)/(c*dt+dx))*(E[t][x-1] - E[t-1][x])
+                E[t][x] = ((c*dt-dx)/(c*dt+dx))*(E[t][x] - E[t-1][x-1])
             else:
                 E[t][x+1] = ((dx)/(dt))*(B[t][x] - B[t-1][x])*E[t-1][x]
             
@@ -37,8 +42,5 @@ if __name__ == "__main__":
             else:
                 B[t][x] = ((dt)/(dx))*(E[t][x+1] - E[t][x]) + B[t-1][x]
 
-for e in E:
-    print(*list(map(lambda x: '{:.3f}\t'.format(x), e)))
-print()
-for b in B:
-    print(*list(map(lambda x: '{:.3f}\t'.format(x), b)))
+show_result(E)
+show_result(B)
