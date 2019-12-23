@@ -36,7 +36,7 @@ if __name__ == "__main__":
     E = [0 for _ in range(num_space)]
     B = [0 for _ in range(num_space)]
 
-    refrection = True
+    refrection = False
     pulse_point = num_space//2
 
     fig, ax = plt.subplots(2, 1)
@@ -53,20 +53,26 @@ if __name__ == "__main__":
         for x in range(num_space):
             if t == 0:
                 continue
-            if (x==0 or x==1) and not(refrection):
-                E[x] = 0
-            elif (x==num_space-1 or x==num_space-2) and not(refrection):
-                E[x] = 0
             if x == 0 and refrection:
                 E[x] = ((c*dt-dx)/(c*dt+dx))*(E[x+1] - pre_E[x])
             elif x == num_space-1 and refrection:
                 E[x] = ((c*dt-dx)/(c*dt+dx))*(E[x] - pre_E[x-1])
+            elif (x==0 or x==1) and not(refrection):
+                E[x] = 0
+            elif (x==num_space-1 or x==num_space-2) and not(refrection):
+                E[x] = 0
             else:
                 E[x] = pre_E[x] + pow(c, 2)*(dx/dt)*(pre_B[x] - pre_B[x-1])
         E[pulse_point] += gaussian_pulse(t)
 
         # update B
         for x in range(num_space-1):
-            B[x] = pre_B[x] + (dt/dx)*(E[x+1]-E[x])
+            if (x==0 or x==1) and not(refrection):
+                B[x] = 0
+            elif (x==num_space-2 or x==num_space-3) and not(refrection):
+                B[x] = 0
+            else:
+                B[x] = pre_B[x] + (dt/dx)*(E[x+1]-E[x])
         
+        # draw
         draw_plot(E, B, lines_E, lines_B, ax)
