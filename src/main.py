@@ -4,7 +4,7 @@ import math
 import numpy as np
 from matplotlib import pyplot as plt
 
-def gaussian_pulse(t, A=1.0, tau=20):
+def gaussian_pulse(t, A=1.0, tau=50):
     alpha = (4/tau)**2
     pulse = A * np.exp(-alpha*(t - tau)**2)
     return pulse
@@ -20,7 +20,7 @@ def draw_plot(E, B, lines_E, lines_B, ax, ylim=1):
     ax[0].set_ylim((-ylim, ylim))
     ax[1].set_ylim((-ylim, ylim))
     plt.draw()
-    plt.pause(0.1)
+    plt.pause(0.01)
 
 
 if __name__ == "__main__":
@@ -50,29 +50,21 @@ if __name__ == "__main__":
         pre_B = copy.deepcopy(B)
 
         # update E
-        for x in range(num_space):
+        for x in range(1, num_space):
             if t == 0:
-                continue
-            if x == 0 and refrection:
-                E[x] = ((c*dt-dx)/(c*dt+dx))*(E[x+1] - pre_E[x])
-            elif x == num_space-1 and refrection:
-                E[x] = ((c*dt-dx)/(c*dt+dx))*(E[x] - pre_E[x-1])
-            elif (x==0 or x==1) and not(refrection):
-                E[x] = 0
-            elif (x==num_space-1 or x==num_space-2) and not(refrection):
-                E[x] = 0
+                break
+            if x == num_space-1 and not(refrection):
+                E[x] = pre_E[x-1] + ((c*dt-dx)/(c*dt+dx))*(E[x-1] - pre_E[x])
             else:
-                E[x] = pre_E[x] + pow(c, 2)*(dx/dt)*(pre_B[x] - pre_B[x-1])
+                E[x] = pre_E[x] + (c**2)*(dt/dx)*(pre_B[x] - pre_B[x-1])
+        if not(refrection):
+            E[0] = pre_E[1] + ((c*dt-dx)/(c*dt+dx))*(E[1] - pre_E[0])
         E[pulse_point] += gaussian_pulse(t)
 
         # update B
         for x in range(num_space-1):
-            if (x==0 or x==1) and not(refrection):
-                B[x] = 0
-            elif (x==num_space-2 or x==num_space-3) and not(refrection):
-                B[x] = 0
-            else:
-                B[x] = pre_B[x] + (dt/dx)*(E[x+1]-E[x])
+            B[x] = pre_B[x] + (dt/dx)*(E[x+1]-E[x])
+
         
         # draw
         draw_plot(E, B, lines_E, lines_B, ax)
