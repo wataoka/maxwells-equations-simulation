@@ -36,7 +36,7 @@ if __name__ == "__main__":
     E = [0 for _ in range(num_space)]
     B = [0 for _ in range(num_space)]
 
-    refrection = False
+    reflection = False
     pulse_point = num_space//2
 
     fig, ax = plt.subplots(2, 1)
@@ -53,11 +53,11 @@ if __name__ == "__main__":
         for x in range(1, num_space):
             if t == 0:
                 break
-            if x == num_space-1 and not(refrection):
+            if x == num_space-1 and not(reflection):
                 E[x] = pre_E[x-1] + ((c*dt-dx)/(c*dt+dx))*(E[x-1] - pre_E[x])
             else:
                 E[x] = pre_E[x] + (c**2)*(dt/dx)*(pre_B[x] - pre_B[x-1])
-        if not(refrection):
+        if not(reflection):
             E[0] = pre_E[1] + ((c*dt-dx)/(c*dt+dx))*(E[1] - pre_E[0])
         E[pulse_point] += gaussian_pulse(t)
 
