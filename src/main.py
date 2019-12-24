@@ -12,7 +12,7 @@ def gaussian_pulse(t, A=1.0, tau=50):
 def show_result(arr):
     print(*list(map(lambda x: '{0:>8.2f}'.format(x), arr)))
 
-def draw_plot(E, B, lines_E, lines_B, ax, ylim=1):
+def drawing(E, B, lines_E, lines_B, ax, ylim=1.5):
     lines_E.set_data(X, E)
     lines_B.set_data(X, B)
     ax[0].set_xlim((X.min(), X.max()))
@@ -66,5 +66,5 @@ if __name__ == "__main__":
             B[x] = pre_B[x] + (dt/dx)*(E[x+1]-E[x])
 
         
-        # draw
-        draw_plot(E, B, lines_E, lines_B, ax)
+        # draw graph
+        drawing(E, B, lines_E, lines_B, ax)
