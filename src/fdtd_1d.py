@@ -62,6 +62,5 @@ if __name__ == "__main__":
         for x in range(num_space-1):
             B[x] = pre_B[x] + (dt/dx)*(E[x+1]-E[x])
 
-        
         # draw graph
         drawing(E, B, lines_E, lines_B, ax)
