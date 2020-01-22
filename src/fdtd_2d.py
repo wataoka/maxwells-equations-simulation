@@ -74,7 +74,6 @@ if __name__ == "__main__":
         pre_Bx = copy.deepcopy(Bx)
         pre_By = copy.deepcopy(By)
 
-
         # update E
         for x in range(1, num_space):
             for y in range(1, num_space):
