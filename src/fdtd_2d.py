@@ -91,5 +91,6 @@ if __name__ == "__main__":
         Bx_list.append(pre_Bx)
         By_list.append(pre_By)
     # draw graph
+    save_Ez()
     save_Bx()
     save_By()
